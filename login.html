@@ -1,0 +1,84 @@
+<!-- index.html -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Play Video - Interactive</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<h1>Do you like to play the video?</h1>
+
+
+<div class="stage" id="stage">
+<button id="noBtn" class="btn no" aria-label="No">No</button>
+<div id="centerBox" style="text-align:center; pointer-events:none">
+<svg width="84" height="84" viewBox="0 0 24 24" fill="none" style="opacity:.12"><path d="M12 2v20M2 12h20" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="controls">
+<button id="yesBtn" class="btn yes">Yes</button>
+</div>
+</div>
+
+
+<div class="video-wrap" id="videoWrap">
+<video id="videoPlayer" controls preload="metadata">
+<source id="videoSource" src="c:\Users\adorm\Downloads\pogisidigman.mp4" type="video/mp4">
+Sorry, your browser does not support embedded videos.
+</video>
+</div>
+</div>
+</div>
+
+
+<script>
+const stage = document.getElementById('stage');
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const videoWrap = document.getElementById('videoWrap');
+const videoPlayer = document.getElementById('videoPlayer');
+
+
+function placeNoInitial(){
+const s = stage.getBoundingClientRect();
+noBtn.style.left = (s.width*0.65) + 'px';
+noBtn.style.top = (s.height*0.65) + 'px';
+}
+
+
+function moveNoRandom(){
+const s = stage.getBoundingClientRect();
+const b = noBtn.getBoundingClientRect();
+const maxX = Math.max(8, s.width - b.width - 8);
+const maxY = Math.max(8, s.height - b.height - 8);
+const x = Math.floor(8 + Math.random() * maxX);
+const y = Math.floor(8 + Math.random() * maxY);
+noBtn.style.left = x + 'px';
+noBtn.style.top = y + 'px';
+}
+
+
+window.addEventListener('load', ()=>{ placeNoInitial(); });
+window.addEventListener('resize', ()=>{ placeNoInitial(); });
+
+
+noBtn.addEventListener('mouseenter', ()=>{ moveNoRandom(); });
+noBtn.addEventListener('click', (e)=>{
+e.preventDefault();
+moveNoRandom();
+});
+
+
+yesBtn.addEventListener('click', ()=>{
+stage.style.display = 'none';
+videoWrap.style.display = 'block';
+setTimeout(()=>{
+if(videoPlayer){
+const p = videoPlayer.play();
+if(p && p.catch) p.catch(()=>{});
+}
+}, 150);
+});
+</script>
+</body>
+</html>
